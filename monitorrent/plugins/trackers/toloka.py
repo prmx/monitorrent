@@ -106,20 +106,17 @@ class TolokaTracker(object):
             return False
         return {'toloka_sid': self.bb_data}
 
-    def get_id(self, url):
-        match = self._regex.match(url)
-        if match is None:
-            return None
-
-        return match.group(1)
-
     # noinspection PyShadowingBuiltins
     def get_download_url(self, url):
-        id = self.get_id(url)
-        if id is None:
+        r = requests.get(url, cookies=self.get_cookies(), **self.tracker_settings.get_requests_kwargs())
+        dLinks = get_soup(r.text).select('table.btTbl td.gensmall a.piwik_download')
+
+        if not len(dLinks):
             return None
 
-        return "https://toloka.to/download.php?id=" + id
+        downloadPath = dLinks[0]['href']
+
+        return "https://toloka.to/" + downloadPath
 
 
 class TolokaPlugin(WithCredentialsMixin, ExecuteWithHashChangeMixin, TrackerPluginBase):

@@ -44,7 +44,7 @@ class TolokaTracker(object):
     tracker_settings = None
     login_url = "https://toloka.to/login.php"
     profile_page = "https://toloka.to/privmsg.php?folder=inbox"
-    _regex = re.compile(six.text_type(r'^https?://w*\.*toloka.to/t(\d+)(/.*)?$'))
+    _regex = re.compile(six.text_type(r'^https?://w*\.*toloka.to/t(\d+)(.*)?$'))
 
     def __init__(self, bb_data=None):
         self.bb_data = bb_data
@@ -119,7 +119,7 @@ class TolokaTracker(object):
         if id is None:
             return None
 
-        return "https://toloka.to/dl.php?t=" + id
+        return "https://toloka.to/download.php?id=" + id
 
 
 class TolokaPlugin(WithCredentialsMixin, ExecuteWithHashChangeMixin, TrackerPluginBase):
